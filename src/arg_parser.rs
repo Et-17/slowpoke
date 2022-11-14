@@ -9,6 +9,9 @@ pub struct Args {
     #[arg(short, long, default_value_t = 200)]
     pub socket_num: u16,
 
+    #[arg(short, long, default_value_t = 80)]
+    pub port: u16,
+
     /// Address of the target
     #[arg(short, long)]
     pub target: String,
