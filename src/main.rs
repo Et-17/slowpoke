@@ -1,3 +1,8 @@
+mod arg_parser;
+
+use arg_parser::{Args, Parser};
+
 fn main() {
-    println!("Hello, world!");
+    let args = Args::parse();
+    println!("Attacking {} with {} sockets", args.target, args.socket_num);
 }
