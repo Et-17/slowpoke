@@ -1,5 +1,5 @@
 use std::net::{IpAddr, AddrParseError, TcpStream};
-use std::io::{Error, Write, self};
+use std::io::{Error, Write};
 
 pub fn resolve_address(address: String) -> Result<IpAddr, AddrParseError> {
     return address.parse();
@@ -27,6 +27,13 @@ pub fn make_connections(target: IpAddr, port: u16,  socket_num: u16) -> Result<V
 
 pub fn prepare_stream(stream: &mut TcpStream) -> Result<(), Error> {
     match stream.write("GET / HTTP/1.1\r\n".as_bytes()) {
+        Ok(_) => return Ok(()),
+        Err(e) => return Err(e),
+    }
+}
+
+pub fn send_header(stream: &mut TcpStream) -> Result<(), Error> {
+    match stream.write("Garbage: Garbage\r\n".as_bytes()) {
         Ok(_) => return Ok(()),
         Err(e) => return Err(e),
     }

