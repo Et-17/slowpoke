@@ -12,8 +12,8 @@ fn main() {
     println!("[*] Resolving address");
     let addr = match attacker::resolve_address(args.target) {
         Ok(a) => a,
-        Err(_) => {
-            println!("[!] Error resolving address");
+        Err(e) => {
+            println!("[!] Error resolving address ---- {}", e);
             std::process::exit(1);
         }
     };

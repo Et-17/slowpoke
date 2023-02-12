@@ -1,9 +1,10 @@
-use std::net::{IpAddr, AddrParseError, TcpStream};
-use std::io::{Error, Write};
+use std::net::{IpAddr, TcpStream};
+use std::io::{Error, Write, self};
+use dns_lookup::lookup_host;
 use rand;
 
-pub fn resolve_address(address: String) -> Result<IpAddr, AddrParseError> {
-    return address.parse();
+pub fn resolve_address(address: String) -> io::Result<IpAddr> {
+    return Ok(lookup_host(address.as_str())?[0]);
 }
 
 pub fn make_connections(target: IpAddr, port: u16,  socket_num: u16) -> Result<Vec<TcpStream>, Error> {
