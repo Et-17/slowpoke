@@ -20,4 +20,7 @@ pub struct Args {
     #[arg(short, long, default_value_t = false)]
     pub randheaders: bool,
 
+    /// Milliseconds between headers
+    #[arg(short, long, default_value_t = 200)]
+    pub delay: u64,
 }

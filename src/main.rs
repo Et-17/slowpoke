@@ -2,6 +2,7 @@ mod arg_parser;
 mod attacker;
 
 use arg_parser::{Args, Parser};
+use std::{thread::sleep, time::Duration};
 
 fn main() {
     // Parse arguments
@@ -24,8 +25,8 @@ fn main() {
     }
 
     // Enter attack cycle
-    println!("[*] Attacking");
     loop {
+        println!("[*] Attacking");
         match attacker::send_headers(&mut streams, args.randheaders) {
             Ok(_) => (),
             Err(e) => {
@@ -37,5 +38,6 @@ fn main() {
                 }
             }
         }
+        sleep(Duration::from_millis(args.delay));
     }
 }
