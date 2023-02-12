@@ -16,4 +16,8 @@ pub struct Args {
     #[arg(short, long)]
     pub target: String,
 
+    /// Use randomized headers
+    #[arg(short, long, default_value_t = false)]
+    pub randheaders: bool,
+
 }

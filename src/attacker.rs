@@ -1,5 +1,6 @@
 use std::net::{IpAddr, AddrParseError, TcpStream};
 use std::io::{Error, Write};
+use rand;
 
 pub fn resolve_address(address: String) -> Result<IpAddr, AddrParseError> {
     return address.parse();
@@ -32,16 +33,20 @@ pub fn prepare_stream(stream: &mut TcpStream) -> Result<(), Error> {
     }
 }
 
-pub fn send_header(stream: &mut TcpStream) -> Result<(), Error> {
-    match stream.write("Garbage: Garbage\r\n".as_bytes()) {
+pub fn send_header(stream: &mut TcpStream, randomize_headers: bool) -> Result<(), Error> {
+    let value = match randomize_headers {
+        true => "Garbage".to_string(),
+        false => rand::random::<u128>().to_string(),
+    };
+    match stream.write(format!("Garbage: {}\r\n", value).as_bytes()) {
         Ok(_) => return Ok(()),
         Err(e) => return Err(e),
     }
 }
 
-pub fn send_headers(streams: &mut Vec<TcpStream>) -> Result<(), Error> {
+pub fn send_headers(streams: &mut Vec<TcpStream>, randomize_headers: bool) -> Result<(), Error> {
     for i in 0..streams.len() {
-        send_header(&mut streams[i])?;
+        send_header(&mut streams[i], randomize_headers)?;
     }
     return Ok(());
 }

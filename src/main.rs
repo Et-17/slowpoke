@@ -26,7 +26,7 @@ fn main() {
     // Enter attack cycle
     println!("[*] Attacking");
     loop {
-        match attacker::send_headers(&mut streams) {
+        match attacker::send_headers(&mut streams, args.randheaders) {
             Ok(_) => (),
             Err(e) => {
                 println!("[!] Error during header send ---- {}", e);
